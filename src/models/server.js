@@ -14,7 +14,7 @@ class Server {
   constructor() {
     this.app = express();
     this.__dirname = dirname(fileURLToPath(import.meta.url));
-    //this.job = job
+    this.job = job
     this.app.set("port", process.env.PORT || 4000);
     /* this.app.set('views', join(this.__dirname, '../views'))
     this.app.engine('.hbs', engine({
