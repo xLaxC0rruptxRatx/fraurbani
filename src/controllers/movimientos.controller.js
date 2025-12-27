@@ -79,7 +79,6 @@ for (let i = 0; i < cantidadi; i++) {
     
     console.log(resp)
     
-   //res.send(resp)
 
   } catch (err) {
     console.error(err);
@@ -88,6 +87,7 @@ for (let i = 0; i < cantidadi; i++) {
   }
   
 }
+   res.status(200).json({message: 'Completado, revisa el otro dispositivo!'})
 
 }
 
