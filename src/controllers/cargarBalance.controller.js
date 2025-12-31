@@ -40,7 +40,7 @@ const processActions = async(req, res) => {
 }
 
 const cargarBalance = async(req, res) => {
-  console.log(req.body)
+  //console.log(req.body)
   
   try {/*
     const resp = await requests(
@@ -50,7 +50,8 @@ const cargarBalance = async(req, res) => {
       null
     );
 
-   console.log(resp)*/
+   console.log(resp)
+   res.send(resp)*/
 
     res.send('bCb/pmUUCrwn5TmhnijiRRB7B7xCPz5ITWDad8aSKp+csyHAUiyNGhZdfpyiKY0d9HAGExFKQlZvVprFyl2qRw==');
   } catch (err) {
@@ -146,6 +147,8 @@ const userV2 = async(req, res) => {
 
 const getUserId = async(req, res) => {
   const { phone } = req.params
+  let user_id
+  
   try {
     const resp = await requests(
       req,
@@ -154,8 +157,8 @@ const getUserId = async(req, res) => {
       null
     );
     
-    resp.name = `${resp.name} maximo 50 si no da error.`
-
+    resp.name = `${resp.name}`
+    user_id = resp.user_id
     console.log(resp)
 
     res.send(resp);
@@ -163,14 +166,113 @@ const getUserId = async(req, res) => {
     console.error(err);
     res.status(500).json({ error: "Error API externa" });
   }
+  
+    //req.body.add_urbicoins = 50
+  //console.log(req.body)
+  /*
+  req.body = { user_id: user_id, add_urbicoins: 50 }
+  for (let i = 0; i < 15; i++) {
+  try {
+    const resp = await requests(
+      req,
+      `https://app.urbani.io/app/p/addPoints`,
+      'POST',
+      req.body
+    );
+    
+    console.log(resp)
+    
+   //res.send(resp)
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+ // console.log('ap')
+  }
+  } 
+  */
+}
+
+const infoCoinPoints = async(req, res) => {
+  try {
+    const resp = await requests(
+      req,
+      `https://app.urbani.io/app/g/info_coins_points`,
+      'GET',
+      null
+    );
+    
+    resp.change = '1'
+    
+    console.log(resp)
+    
+    res.send(resp)
+    
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+  //console.log('ap')
+  }
+}
+
+//Única petición POST hasts el momento
+const ratesV3 = async(req, res) => {
+  
+  console.log(req.body)
+  
+  try {
+    const resp = await requests(
+      req,
+      `https://app-static-prod.urbani.io/app/g/rates/v3`,
+      'POST',
+      req.body
+    );
+    
+    
+    console.log(`Rates resp. --> ${resp}`)
+    
+    res.send(resp)
+    
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+  //console.log('ap')
+  }
+}
+
+const v2URL = async(req, res) => {
+  try {
+    const resp = await requests(
+      req,
+      `https://app-static-prod.urbani.io/app/g/v2/url`,
+      'GET',
+      null
+    );
+    
+    resp.URL_FB = 'https://eporner.com'
+    
+    console.log(resp)
+    
+    res.send(resp)
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+  console.log('ap')
+  }
 }
 
 export {
   cargarBalance,
   cargarConfig,
   cargarFlags,
+  infoCoinPoints,
   getHour,
   getUserId,
   processActions,
-  userV2
+  ratesV3,
+  userV2,
+  v2URL
 }

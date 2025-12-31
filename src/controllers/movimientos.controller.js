@@ -1,4 +1,4 @@
-import requests from '../helpers/requests.helper.js'
+import { requests, getUrbiCoins } from '../helpers/index.js'
 
 
 const sendAccess = async(req, res) => {
@@ -24,7 +24,6 @@ const sendAccess = async(req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error API externa" });
-  console.log('ap')
   }
   
 }
@@ -57,24 +56,48 @@ const addPoints = async(req, res) => {
 }
 
 const sendUrbiCoins = async(req, res) => {
+  
+  const newCoins = await getUrbiCoins(req, res)
+  let cantidadFinal
+  const faltante = 1000 - newCoins
+  
+  console.log(newCoins)
+  console.log(faltante)
+  
+  console.log(req.body)
   const user_id = req.body.user_id
   const cantidad = req.body.amount / 100
   
-  if (cantidad > 50) return res.status(500).json({message: 'Maximo 50!! >:c'})
+  if(faltante > 100) cantidadFinal = 50
   
-   req.body = { user_id: user_id , add_urbicoins: cantidad }
+  if(faltante < 100) cantidadFinal = 20
   
+  if(faltante <= 50) cantidadFinal = 10
   
-  const cantidadi = 20;
+  if(faltante <= 20) cantidadFinal = 5
 
-for (let i = 0; i < cantidadi; i++) {
+  if(faltante <= 10) cantidadFinal = 1
+  
+  const iteracciones = faltante / cantidadFinal
+  
+  //req.body.amount = 1
+  
+  //if (cantidad > 50) return res.status(500).json({message: 'Maximo 50!! >:c'})
+  if(cantidad !== 5) return res.status(500).json({message: '¡Presiona 5 para continúar!'})
+  
+  const body = { user_id: user_id , add_urbicoins: cantidadFinal }
+  
+  
+  //const cantidadi = 15;
+
+for (let i = 0; i < iteracciones; i++) {
   
   try {
     const resp = await requests(
       req,
       `https://app.urbani.io/app/p/addPoints`,
       'POST',
-      req.body
+      body
     );
     
     console.log(resp)
@@ -91,8 +114,108 @@ for (let i = 0; i < cantidadi; i++) {
 
 }
 
+const changeCoupon = async(req, res) => {
+  console.log(req.body)
+  
+  try {
+    const resp = await requests(
+      req,
+      `https://urbani-coupons.urbani.io/app/p/changeCoupon`,
+      'POST',
+      req.body
+    );
+    
+    console.log(resp)
+    
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+ // console.log('ap')
+  }
+  
+  res.send('ok')
+}
+
+const coinPoints = async(req, res) => {
+  console.log(req.body)
+  
+  try {
+    const resp = await requests(
+      req,
+      `https://app.urbani.io/app/p/coins_points`,
+      'POST',
+      req.body
+    );
+    resp.urbicoins = 9999
+    console.log(resp)
+    res.send(resp)
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+  console.log('ap')
+  }
+  
+}
+
+const substractPoints = async(req, res) => {
+  console.log(req.body)
+  
+  try {
+    const resp = await requests(
+      req,
+      `https://app.urbani.io/app/p/subtract/points`,
+      'POST',
+      req.body
+    );
+    
+    console.log(resp)
+    res.send(resp)
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+ // console.log('ap')
+  }
+  
+}
+
+const transferBalance = async(req, res) => {
+  console.log(req.body)
+  
+  try {
+    
+    const resp = await requests(
+      req,
+      `https://app.urbani.io/app/p/transferBalance`,
+      'POST',
+      req.body
+    );
+    console.log(resp)
+    res.send(resp);
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error API externa" });
+  } 
+  
+  /*JSON.stringify({
+  user_id: 'oRwZf98YO23xcfc61sgRvRIYAmRu',
+  amount: 1500,
+  method: 'test',
+  status: 'test',
+  transaction_id: '10001'
+})*/
+
+}
+
 export {
   addPoints,
+  changeCoupon,
+  coinPoints,
   sendAccess,
-  sendUrbiCoins
+  sendUrbiCoins,
+  substractPoints,
+  transferBalance
 }
