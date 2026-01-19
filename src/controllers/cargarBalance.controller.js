@@ -53,7 +53,7 @@ const cargarBalance = async(req, res) => {
    console.log(resp)
    res.send(resp)*/
 
-    res.send('bCb/pmUUCrwn5TmhnijiRRB7B7xCPz5ITWDad8aSKp+csyHAUiyNGhZdfpyiKY0d9HAGExFKQlZvVprFyl2qRw==');
+    res.send('CXVnVVuE5751/8w6oySaN168zMPEeAWpFgaYX70ir/ppFsMoJ1gT1CPq/tQbSxMnB4+csxejI3xeody+GBLj9fcAbT47jmkFNbyM+EyEcwQ=');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error API externa" });
