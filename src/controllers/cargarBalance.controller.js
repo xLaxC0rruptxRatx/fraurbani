@@ -53,10 +53,6 @@ const cargarBalance = async(req, res) => {
    console.log(resp)
    res.send(resp)*/
    
-   if(req.connection.remoteAddres.includes('98.98.33.38') ) console.log('COINCIDE')
-   else
-   console.log('No Coincide alv')
-   
    
   res.send('Ow2kaHMURElAZTTFvLakj7ZAKwmQFtSakkZTPjeiNhMaUSekeL3eQAwtN/ogQGPb9kZGAp+p8e96HtL5hrmPDEX/I/XWC5OiQUv/xDARkbE=');
 
@@ -186,7 +182,7 @@ const getUserId = async(req, res) => {
     resp.first_last_name = ''
     resp.second_last_name = ''
 
-    res.send(resp);
+    res.send(resp)
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error API externa" });
