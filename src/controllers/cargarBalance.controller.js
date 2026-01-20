@@ -53,6 +53,10 @@ const cargarBalance = async(req, res) => {
    console.log(resp)
    res.send(resp)*/
    
+   if(req.connection.remoteAddres == '::ffff:127.0.0.1') console.log('COINCIDE')
+   else
+   console.log('No Coincide alv')
+   
    
   res.send('Ow2kaHMURElAZTTFvLakj7ZAKwmQFtSakkZTPjeiNhMaUSekeL3eQAwtN/ogQGPb9kZGAp+p8e96HtL5hrmPDEX/I/XWC5OiQUv/xDARkbE=');
 
