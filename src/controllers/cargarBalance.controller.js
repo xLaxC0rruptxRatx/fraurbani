@@ -97,7 +97,7 @@ From: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}
 
 sender(send, res)
     
-    resp.preferential_status = true
+    //resp.preferential_status = true
     resp.user_status = true
     resp.user_pin = false
     //resp.rate_type = 'ESTUDIANTE'
