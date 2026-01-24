@@ -1,7 +1,7 @@
 import Comment from '../models/comment.js'
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import fs from 'fs'
+import fs from 'fs/promises'
 
 import cloudinary from 'cloudinary'
 
@@ -12,14 +12,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const cloudinaryv2 = cloudinary.v2
 cloudinaryv2.config( process.env.CLOUDINARY_URL )
 
+
 const loadFile = async (req, res) => {
   try {
-    let photo = "/./img/avatar.png"; // default SIEMPRE
+    let photo = "/./img/avatar.png";
 
     if (req.files && req.files.file) {
       const { tempFilePath } = req.files.file;
+
       const result = await cloudinaryv2.uploader.upload(tempFilePath);
-      photo = result.secure_url; // reemplaza default
+      photo = result.secure_url;
+
+      // 🔥 BORRAR ARCHIVO TEMPORAL
+      await fs.unlink(tempFilePath);
     }
 
     if (!req.body.comment || !req.body.rating) {
