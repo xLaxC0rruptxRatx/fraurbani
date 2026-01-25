@@ -99,7 +99,7 @@ const sharePage = () => {
     const comentario = document.querySelector('.comentario')
     const rating = document.querySelector('.ratingInpt')
     
-    if (!comentario.value || !rating.value) {
+    if (!comentario.value || !rating.value || comentario.value.length <= 3) {
       comentario.style.borderColor = '#cc0000'
       }
       else

@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import fs from 'fs/promises'
 
 import cloudinary from 'cloudinary'
+import sanitize from 'sanitize-html'
 
 import { fileUpload } from "../helpers/index.js";
 
@@ -30,11 +31,28 @@ const loadFile = async (req, res) => {
     if (!req.body.comment || !req.body.rating) {
       return res.status(400).json({ msg: 'Datos incompletos' });
     }
+    
+    if (
+  typeof req.body.comment !== 'string' ||
+  req.body.comment.length < 3 ||
+  req.body.comment.length > 300
+) {
+  return res.status(400).json({ msg: 'Comentario inválido' })
+}
+
+if (![1,2,3,4,5].includes(Number(req.body.rating))) {
+  return res.status(400).json({ msg: 'Rating inválido' })
+}
+
+const cleanComment = sanitize(req.body.comment, {
+  allowedTags: [],
+  allowedAttributes: {}
+})
 
     await Comment.create({
       name: req.body.name || 'Anonimo',
       rating: Number(req.body.rating),
-      comment: req.body.comment,
+      comment: cleanComment,
       photo
     });
 

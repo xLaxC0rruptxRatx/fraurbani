@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { check } from "express-validator";
 
-import { validateToUpload } from "../middlewares/index.js";
+import { commentLimiter, validateToUpload } from "../middlewares/index.js";
 import { loadFile } from "../controllers/index.js";
 
 const router = Router()
 
-router.post('/', loadFile)
-
+router.post('/', commentLimiter, loadFile)
+/*
 router.get('/', (req, res) => {
   res.send(`
   <form method="POST" action="/comment" enctype="multipart/form-data">
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
   </form>
   `)
 })
-
+*/
 /*router.put('/:collection/:id', [
     validateToUpload,
     check('id','Debe de ser un mongo id').isMongoId(),
