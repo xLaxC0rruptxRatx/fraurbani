@@ -37,7 +37,7 @@ const sharePage = () => {
     })
     .catch(err => console.log('Share cancelado', err))
   } else {
-    alert('Tu navegador no soporta compartir 😢')
+    alert('Tu navegador no soporta compartir')
   }
 }
 
