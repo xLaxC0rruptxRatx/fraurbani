@@ -5,12 +5,10 @@ import crypto from "crypto";
 
 const encrypt = (plaintext) => {
   // Clave e IV en base64
-const key_b64 = "tSAW4aLMR6A0HicdjecI/4xZYiCZwHmtM4cNRWDY2Tk=";
-const iv_b64 = "EErj4mLqf1matL7E6vugng==";
 
 // Convertir base64 → Buffer
-const key = Buffer.from(key_b64, "base64");
-const iv = Buffer.from(iv_b64, "base64");
+const key = Buffer.from(process.env.KEY_B64, "base64");
+const iv = Buffer.from(process.env.IV_B64, "base64");
 
 // Crear cifrador AES-CBC
 const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
