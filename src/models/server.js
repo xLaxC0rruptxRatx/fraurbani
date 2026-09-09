@@ -29,7 +29,7 @@ class Server {
       helpers: {
         stars: (rating) => {
           rating = Number(rating) || 0
-          return '⭐'.repeat(rating)
+          return '<i class="bi bi-star-fill"></i>'.repeat(rating)
         },
         devBadge: (isDev) => {
           if (!isDev) return ''

@@ -7,7 +7,7 @@ import { getComments, loadFile, react } from "../controllers/index.js"
 const router = Router()
 
 router.post('/', [
-  check('comment', 'Ponga algo, pendejo!').notEmpty(),
+  check('comment', 'Pon algo mi pendejo!').notEmpty(),
   //check('rating', 'Ponga algo, pendejo!').notEmpty(),
   commentLimiter,
   fieldVal

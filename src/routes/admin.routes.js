@@ -4,11 +4,11 @@ import { admRole, collectionVal, hvaRole, jwtVal } from '../middlewares/index.js
 
 const router = Router()
 
-router.get('/users/:collection', [
+/*router.get('/users/:collection', [
  // jwtVal,
   //hvaRole,
 //  admRole,
   collectionVal,
   ], getUsers)
-
+*/
 export default router

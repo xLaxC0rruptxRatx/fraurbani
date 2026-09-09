@@ -12,10 +12,18 @@ const renderBal = async(req, res) => {
   console.log(auth)
 
   const encrypted = auth.replace(/ /g, '+');
-  const phone = decrypt(encrypted)
+  //const phone = decrypt(encrypted)
+  
+  let phone
+  try {
+    phone = decrypt(encrypted)
+    if (phone.length != 10) throw new Error()
+  } catch {
+    return res.status(400).render('items.hbs',{adv: `Error en usuario.`, advIcon: 'warningRedIcon', Avalue: 'Inicio', href: '/'})
+  }
     
   if(!phone) {
-    res.status(400).render('items.hbs',{adv: `Error en usuario.`, advIcon: 'warningIcon', Avalue: 'Inicio', href: '/'})
+    return res.status(400).render('items.hbs',{adv: `Error en usuario.`, advIcon: 'warningIcon', Avalue: 'Inicio', href: '/'})
   }
   
   const authExs = await IP.findOne({ phone })
@@ -24,26 +32,16 @@ const renderBal = async(req, res) => {
      return res.status(400).render('items.hbs',{adv: `Usuario invalido.`, advIcon: 'warningIcon', Avalue: 'Inicio', href: '/'})
   }
   
-  let balance = 300
-  let freeTrip = 0
-  let isChecked
-  let isRanUsr
-  let hombre
-  let mujer
-  
-  if (authExs.balance) balance = authExs.balance / 100
-  
-  if (authExs.points) freeTrip = authExs.points
-  
-  if (authExs.Settings.autoRegen) isChecked = 'checked'
-  
-  if (authExs.Settings.ranUsr) isRanUsr = 'checked'
-  
-  if (authExs.Settings.male) hombre = 'checked'
-  
-  if (authExs.Settings.female) mujer = 'checked'
-  
-  res.render('items.hbs', { form: true, balance, freeTrip, auth, isChecked, isRanUsr, hombre, mujer })
+  res.render('items.hbs', {
+    form: true, 
+    balance: authExs.balance ? authExs.balance / 100 : 300, 
+    freeTrip: authExs.points ? authExs.points : 0, 
+    auth, 
+    isAutoReg: authExs.Settings.autoRegen ? 'checked' : null, 
+    isRanUsr: authExs.Settings.ranUsr ? 'checked' : null, 
+    hombre: authExs.Settings.male ? 'checked' : null, 
+    mujer: authExs.Settings.female ? 'checked' : null 
+  })
 
 } catch(err) {
   res.json({ message: err })
@@ -62,43 +60,34 @@ const updateItems = async (req, res) => {
 
     const { balance, freeTrip, atRg, raUs, ho, mu } = req.body
     
-    let autoRegen
-    
-    let ranUsr
-    
-    let male
-    
-    let female
-    
     if (!auth) {
       return res.json({message: 'Falta usuario!'})
     }
 
-    const encrypted = auth.replace(/ /g, '+');
-    const phone = decrypt(encrypted)
+    const encrypted = auth.replace(/ /g, '+')
+  
+    let phone
+  try {
+    phone = decrypt(encrypted)
+    if (phone.length != 10) throw new Error()
+  } catch {
+    return res.status(400).json({message: 'Error en Usuario!'})
+  }
     
     if (balance > 9999) {
       return res.status(400).json({message: 'Error!'})
     }
-    
-   atRg ? autoRegen = true : autoRegen = false
-   
-   raUs ? ranUsr = true : ranUsr = false
-   
-   ho ? male = true : male = false
-   
-   mu ? female = true : female = false
 
     await IP.updateOne(
       { phone },
       {
         balance: balance * 100,
-        points: freeTrip,
+        points: freeTrip || 0,
         Settings: {
-          autoRegen,
-          ranUsr,
-          male,
-          female,
+          autoRegen: atRg ? true : false,
+          ranUsr: raUs ? true : false,
+          male: ho ? true : false,
+          female: mu ? true : false,
         }
       }
     )
