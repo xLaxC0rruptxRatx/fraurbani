@@ -45,6 +45,7 @@ try {
   
   if(!encIpExs) {
     sender(`Intento sin descargar de web --> ${ auth }
+    📱: ${ phone }
     From: ${ ip }`)
     return res.status(403).render('activador.hbs', { adv: `Descarga el APK desde la página principal, recuerda que si alguien te vendió o intentó vender ésta apk fuiste estafado.`, advIcon: 'warningRedIcon', Avalue: 'Página principal', href: '/'})
   }
